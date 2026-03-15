@@ -1,7 +1,38 @@
 ﻿@page "/"
+@using QRCoder
+@using System.Drawing
+@using System.IO
 
-<PageTitle>Home</PageTitle>
+<PageTitle>North End Coffee - Check In</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="check-in-container">
+    <div class="logo-container">
+        <img src="https://www.northendcoffee.com/wp-content/uploads/2020/08/north-end-coffee-logo.png" 
+             alt="North End Coffee" 
+             class="logo" />
+    </div>
+    
+    <div class="qr-container">
+        <h2>Employee Check-In</h2>
+        <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
+        <p class="instruction">Scan to check in</p>
+    </div>
+</div>
 
-Welcome to your new app.
+@code {
+    private string qrCodeDataUri = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        // Generate QR code for check-in URL
+        string checkInUrl = "https://www.northendcoffee.com/checkin"; // Replace with actual check-in URL
+        
+        using (var qrGenerator = new QRCodeGenerator())
+        {
+            var qrCodeData = qrGenerator.CreateQrCode(checkInUrl, QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new PngByteQRCode(qrCodeData);
+            var qrCodeBytes = qrCode.GetGraphic(20);
+            qrCodeDataUri = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
+        }
+    }
+}

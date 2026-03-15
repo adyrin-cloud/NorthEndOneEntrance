@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5AFtAXyj3z4=",
+  "dgSpecHash": "S593+4a58e4=",
   "success": true,
   "projectFilePath": "C:\\Projects\\NorthEndOneEntrance\\NorthEndOneEntrance.csproj",
   "expectedPackageFiles": [
@@ -30,6 +30,9 @@
     "C:\\Users\\kamrulhassan\\.nuget\\packages\\microsoft.jsinterop.webassembly\\8.0.24\\microsoft.jsinterop.webassembly.8.0.24.nupkg.sha512",
     "C:\\Users\\kamrulhassan\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.24\\microsoft.net.illink.tasks.8.0.24.nupkg.sha512",
     "C:\\Users\\kamrulhassan\\.nuget\\packages\\microsoft.net.sdk.webassembly.pack\\8.0.24\\microsoft.net.sdk.webassembly.pack.8.0.24.nupkg.sha512",
+    "C:\\Users\\kamrulhassan\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\kamrulhassan\\.nuget\\packages\\qrcoder\\1.7.0\\qrcoder.1.7.0.nupkg.sha512",
+    "C:\\Users\\kamrulhassan\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
     "C:\\Users\\kamrulhassan\\.nuget\\packages\\system.io.pipelines\\8.0.0\\system.io.pipelines.8.0.0.nupkg.sha512",
     "C:\\Users\\kamrulhassan\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\8.0.24\\microsoft.netcore.app.runtime.mono.browser-wasm.8.0.24.nupkg.sha512"
   ],

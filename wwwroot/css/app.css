@@ -98,6 +98,89 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
+/* Check-in Page Styles */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.check-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    gap: 3rem;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.qr-container {
+    text-align: center;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 100%;
+}
+
+.qr-container h2 {
+    margin: 0 0 1.5rem 0;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.qr-code {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 1rem auto;
+    display: block;
+    border: 3px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 1rem;
+    background: white;
+}
+
+.instruction {
+    margin: 1.5rem 0 0 0;
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        max-width: 250px;
+    }
+    
+    .qr-container {
+        padding: 1.5rem;
+    }
+    
+    .qr-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .qr-code {
+        max-width: 200px;
+    }
+}
+
 code {
     color: #c02d76;
 }

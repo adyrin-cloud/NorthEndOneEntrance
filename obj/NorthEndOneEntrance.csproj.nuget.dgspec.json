@@ -63,6 +63,10 @@
               "target": "Package",
               "version": "[8.0.24, )",
               "autoReferenced": true
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.7.0, )"
             }
           },
           "imports": [
