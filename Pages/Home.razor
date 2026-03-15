@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/{BranchId:int}"
 @using QRCoder
 @using System.Drawing
 @using System.IO
@@ -8,49 +9,84 @@
 @inject IBranchService BranchService
 @inject AppStateService AppState
 @inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
 @implements IDisposable
 
 <PageTitle>North End Coffee - Check In</PageTitle>
 
 @if (!AppState.IsAuthenticated)
 {
-    <!-- PIN Entry Screen -->
-    <div class="auth-screen">
-        <div class="auth-container">
-            <img src="north-end-logo.png" alt="North End Coffee" class="auth-logo" />
-            <h1 class="auth-title">Entrance System</h1>
-            <p class="auth-subtitle">Enter Security PIN to Continue</p>
-            
-            <div class="pin-display">
-                @if (string.IsNullOrEmpty(securityPin))
+    <!-- PIN Entry Screen - Alternative Professional Layout -->
+    <div class="auth-screen-v2">
+        <div class="auth-left-panel">
+            <div class="auth-branding">
+                <img src="north-end-logo.png" alt="North End Coffee" class="auth-logo-v2" />
+                <h1 class="auth-welcome">Welcome</h1>
+                <p class="auth-tagline">North End Coffee Entrance System</p>
+                <div class="auth-divider"></div>
+                <div class="auth-time">@DateTime.Now.ToString("h:mm tt")</div>
+                <div class="auth-date">@DateTime.Now.ToString("MMMM dd, yyyy")</div>
+            </div>
+        </div>
+        
+        <div class="auth-right-panel">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h2 class="auth-form-title">Security Verification</h2>
+                    <p class="auth-form-subtitle">Please enter your 4-digit PIN</p>
+                </div>
+                
+                <div class="pin-indicator-container">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <div class="pin-dot @(i < securityPin.Length ? "filled" : "")"></div>
+                    }
+                </div>
+
+                <div class="keypad-grid">
+                    @for (int row = 0; row < 3; row++)
+                    {
+                        @for (int col = 0; col < 3; col++)
+                        {
+                            int num = row * 3 + col + 1;
+                            <button class="num-key" @onclick="() => AddPinDigit(num.ToString())">
+                                <span class="num-key-value">@num</span>
+                            </button>
+                        }
+                    }
+                    <button class="num-key empty-key" disabled></button>
+                    <button class="num-key" @onclick='() => AddPinDigit("0")'>
+                        <span class="num-key-value">0</span>
+                    </button>
+                    <button class="num-key delete-key" @onclick="ClearPin">
+                        <svg class="delete-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/>
+                            <line x1="18" y1="9" x2="12" y2="15"/>
+                            <line x1="12" y1="9" x2="18" y2="15"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="auth-submit-btn" @onclick="ValidatePin" disabled="@(securityPin.Length < 4)">
+                    <span>Continue</span>
+                    <svg class="submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+
+                @if (!string.IsNullOrEmpty(pinError))
                 {
-                    <span class="placeholder">• • • •</span>
-                }
-                else
-                {
-                    <span class="pin-dots">@(new string('•', securityPin.Length))</span>
+                    <div class="auth-error-message">
+                        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span>@pinError</span>
+                    </div>
                 }
             </div>
-
-            <div class="keypad">
-                @for (int i = 1; i <= 9; i++)
-                {
-                    int digit = i;
-                    <button class="key-btn" @onclick="() => AddPinDigit(digit.ToString())">@i</button>
-                }
-                <button class="key-btn clear-btn" @onclick="ClearPin">
-                    <div class="delete-label">⌫ Delete</div>
-                </button>
-                <button class="key-btn" @onclick='() => AddPinDigit("0")'>0</button>
-                <button class="key-btn next-btn" @onclick="ValidatePin" disabled="@(securityPin.Length < 4)">
-                    Next →
-                </button>
-            </div>
-
-            @if (!string.IsNullOrEmpty(pinError))
-            {
-                <div class="status-message error">@pinError</div>
-            }
         </div>
     </div>
 }
@@ -225,6 +261,9 @@ else
 @code {
     private enum CheckInStep { EnterID, TakePhoto, Success }
     
+    [Parameter]
+    public int? BranchId { get; set; }
+    
     // Security and Branch Selection
     private string securityPin = string.Empty;
     private string pinError = string.Empty;
@@ -249,6 +288,16 @@ else
     {
         // Initialize app state from localStorage
         await AppState.InitializeAsync();
+        
+        // If BranchId is in URL, load that branch
+        if (BranchId.HasValue && AppState.IsAuthenticated)
+        {
+            var branch = await BranchService.GetBranchByIdAsync(BranchId.Value);
+            if (branch != null)
+            {
+                AppState.SelectedBranch = branch;
+            }
+        }
         
         // Load branches when showing branch selection screen
         if (AppState.IsAuthenticated && AppState.SelectedBranch == null)
@@ -338,12 +387,16 @@ else
         timer?.Dispose();
         timer = null;
         
-        StateHasChanged();
+        // Navigate back to root to clear branch ID from URL
+        Navigation.NavigateTo("/", forceLoad: true);
     }
     
     // Branch Selection Methods
     private void SelectBranch(Branch branch)
     {
+        // Navigate to URL with branch ID
+        Navigation.NavigateTo($"/{branch.Id}");
+        
         AppState.SelectedBranch = branch;
         branchName = branch.Name;
         

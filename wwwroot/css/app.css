@@ -250,6 +250,390 @@ a, .btn-link {
     }
 }
 
+/* Alternative Professional PIN Entry Layout - V2 */
+.auth-screen-v2 {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background: #f8f9fa;
+}
+
+.auth-left-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #7e3e28 0%, #5d2e1f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-left-panel::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.auth-branding {
+    text-align: center;
+    z-index: 1;
+}
+
+.auth-logo-v2 {
+    max-width: 280px;
+    width: 100%;
+    margin-bottom: 3rem;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+    animation: fadeInScale 0.8s ease-out;
+}
+
+.auth-welcome {
+    color: #ffffff;
+    font-size: 4rem;
+    font-weight: 300;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.auth-tagline {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.05em;
+}
+
+.auth-divider {
+    width: 80px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    margin: 3rem auto;
+    border-radius: 2px;
+}
+
+.auth-time {
+    color: #ffffff;
+    font-size: 3.5rem;
+    font-weight: 200;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.auth-date {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.auth-right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    background: #ffffff;
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 480px;
+    animation: slideInRight 0.6s ease-out;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.auth-form-title {
+    color: #1f2937;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.02em;
+}
+
+.auth-form-subtitle {
+    color: #6b7280;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+.pin-indicator-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.pin-dot {
+    width: 16px;
+    height: 16px;
+    border: 3px solid #d1d5db;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.pin-dot.filled {
+    border-color: #7e3e28;
+    background: #7e3e28;
+    transform: scale(1.2);
+    box-shadow: 0 0 0 4px rgba(126, 62, 40, 0.1);
+}
+
+.keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.num-key {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0;
+    height: 72px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.num-key::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(126,62,40,0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.num-key:hover::before {
+    opacity: 1;
+}
+
+.num-key:hover {
+    border-color: #7e3e28;
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(126,62,40,0.15);
+}
+
+.num-key:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 6px rgba(126,62,40,0.1);
+}
+
+.num-key-value {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #1f2937;
+    font-variant-numeric: tabular-nums;
+    z-index: 1;
+}
+
+.empty-key {
+    background: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.delete-key {
+    background: #f3f4f6;
+}
+
+.delete-key:hover {
+    background: #e5e7eb;
+}
+
+.delete-icon {
+    width: 24px;
+    height: 24px;
+    color: #6b7280;
+    z-index: 1;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #7e3e28 0%, #5d2e1f 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: #ffffff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 12px rgba(126,62,40,0.3);
+    margin-bottom: 1rem;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5d2e1f 0%, #7e3e28 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(126,62,40,0.4);
+}
+
+.auth-submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(126,62,40,0.3);
+}
+
+.auth-submit-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+.submit-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.auth-submit-btn:hover:not(:disabled) .submit-arrow {
+    transform: translateX(4px);
+}
+
+.auth-error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #991b1b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    animation: shake 0.5s ease-in-out;
+}
+
+.error-icon {
+    width: 20px;
+    height: 20px;
+    color: #dc2626;
+    flex-shrink: 0;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+@media (max-width: 1024px) {
+    .auth-screen-v2 {
+        flex-direction: column;
+    }
+    
+    .auth-left-panel {
+        min-height: 40vh;
+        padding: 3rem 2rem;
+    }
+    
+    .auth-welcome {
+        font-size: 3rem;
+    }
+    
+    .auth-time {
+        font-size: 2.5rem;
+    }
+    
+    .auth-right-panel {
+        padding: 3rem 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .auth-left-panel {
+        padding: 2rem 1.5rem;
+        min-height: 30vh;
+    }
+    
+    .auth-logo-v2 {
+        max-width: 180px;
+        margin-bottom: 2rem;
+    }
+    
+    .auth-welcome {
+        font-size: 2.5rem;
+    }
+    
+    .auth-time {
+        font-size: 2rem;
+    }
+    
+    .auth-divider {
+        margin: 2rem auto;
+    }
+    
+    .auth-right-panel {
+        padding: 2rem 1.5rem;
+    }
+    
+    .auth-form-title {
+        font-size: 2rem;
+    }
+    
+    .keypad-grid {
+        gap: 0.75rem;
+    }
+    
+    .num-key {
+        height: 64px;
+    }
+    
+    .num-key-value {
+        font-size: 1.5rem;
+    }
+}
+
 /* Professional Employee Check-in Kiosk Layout */
 body {
     margin: 0;
@@ -471,12 +855,19 @@ body {
     border: 3px solid #e8ddd5;
     border-radius: 16px;
     padding: 2rem;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
     color: #111827;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    line-height: 1;
 }
 
 .key-btn:hover {
@@ -919,7 +1310,8 @@ body {
     
     .key-btn {
         padding: 1.5rem;
-        font-size: 2rem;
+        font-size: 1.75rem;
+        min-height: 70px;
     }
     
     .id-display {
@@ -1246,11 +1638,18 @@ body {
     border-radius: 16px;
     padding: 1.75rem;
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
     color: #111827;
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(107, 58, 34, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    line-height: 1;
 }
 
 .key-btn:hover {
@@ -1514,6 +1913,7 @@ body {
     .key-btn {
         padding: 1.25rem;
         font-size: 1.5rem;
+        min-height: 60px;
     }
     
     .id-display {
