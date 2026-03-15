@@ -31,9 +31,15 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release --no-build --output ./publish
     
+    - name: Prepare deployment package
+      run: |
+        cd ./publish/wwwroot
+        zip -r ../../deploy.zip .
+        cd ../..
+    
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3
       with:
         app-name: 'oneentrance'
         publish-profile: ${{ secrets.ONEENTRANCE_WEB_PUBLISH_PROFILE }}
-        package: ./publish/wwwroot
+        package: ./deploy.zip
