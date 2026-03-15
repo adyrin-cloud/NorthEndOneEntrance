@@ -34,6 +34,6 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: 'oneentrance'
-        publish-profile: ${{ secrets.ONEENTRANCE_WEB_PUBLISH_PROFILE }}
+        app-name: 'northendoneentrance'
+        publish-profile: ${{ secrets.NORTHENDONEENTRANCE_PUBLISH_PROFILE }}
         package: ./publish/wwwroot
