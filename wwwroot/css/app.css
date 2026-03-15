@@ -310,10 +310,10 @@ body {
 }
 
 .clear-btn {
-    background: linear-gradient(135deg, #f5f0eb 0%, #e8ddd5 100%);
-    border-color: #7e3e28;
-    color: #7e3e28;
-    font-weight: 700;
+    background: white;
+    border-color: #d1d5db;
+    color: #6b7280;
+    font-weight: 500;
     font-size: 1.15rem;
     letter-spacing: 0.05em;
 }
@@ -326,9 +326,9 @@ body {
 }
 
 .clear-btn:hover {
-    background: linear-gradient(135deg, #e8ddd5 0%, #f5f0eb 100%);
-    border-color: #6b3a22;
-    color: #6b3a22;
+    background: #f9fafb;
+    border-color: #9ca3af;
+    color: #374151;
 }
 
 .next-btn {
@@ -1084,14 +1084,14 @@ body {
 }
 
 .clear-btn {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    border-color: #dc2626;
-    color: #991b1b;
+    background: white;
+    border-color: #d1d5db;
+    color: #6b7280;
 }
 
 .clear-btn:hover {
-    background: linear-gradient(135deg, #fecaca 0%, #fee2e2 100%);
-    border-color: #991b1b;
+    background: #f9fafb;
+    border-color: #9ca3af;
 }
 
 .submit-btn {
