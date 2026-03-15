@@ -2,11 +2,18 @@
 @using QRCoder
 @using System.Drawing
 @using System.IO
+@implements IDisposable
 
 <PageTitle>North End Coffee - Check In</PageTitle>
 
 <div class="check-in-container">
     <header class="header-section">
+        <div class="clock-container">
+            <div class="digital-clock">
+                <div class="time-display">@currentTime</div>
+                <div class="date-display">@currentDate</div>
+            </div>
+        </div>
         <div class="logo-container">
             <img src="north-end-logo.png" 
                  alt="North End Coffee" 
@@ -58,6 +65,9 @@
 @code {
     private string qrCodeDataUri = string.Empty;
     private string branchName = "Gulshan Branch"; // Change this to your branch name
+    private string currentTime = "";
+    private string currentDate = "";
+    private Timer? timer;
 
     protected override void OnInitialized()
     {
@@ -71,5 +81,25 @@
             var qrCodeBytes = qrCode.GetGraphic(20);
             qrCodeDataUri = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
         }
+        
+        // Initialize clock
+        UpdateClock();
+        timer = new Timer(async _ => 
+        {
+            UpdateClock();
+            await InvokeAsync(StateHasChanged);
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
+    
+    private void UpdateClock()
+    {
+        var now = DateTime.Now;
+        currentTime = now.ToString("HH:mm:ss");
+        currentDate = now.ToString("dddd, MMMM dd, yyyy");
+    }
+    
+    public void Dispose()
+    {
+        timer?.Dispose();
     }
 }

@@ -1,7 +1,7 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-9qNB6RyNf1ozhjCZR4IrPwge9dn+llIoyT\/dKNGxgTw=",
+      "hash": "sha256-yGTWwcMqOH5YD\/gESxARuOBF8xjdMeKhNoygD3g4F98=",
       "url": "css\/app.css"
     },
     {
@@ -861,17 +861,17 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-08JeDWw777LXLCKdZukqTDKp\/9Y2B8dNSKPedW4XS3w=",
+      "hash": "sha256-E\/S4\/VOU7pYcpNaPNYg934XuwZgNhDwOK0VHKN\/p9H8=",
       "url": "_framework\/NorthEndOneEntrance.wasm"
     },
     {
-      "hash": "sha256-DPtguG07666YEWNwkHD7z7h95W0VPRCI+zX5HANBJgU=",
+      "hash": "sha256-jfmaVa3ca\/GnyNp2MUQrint\/FIQp5Tco8f4HYYa7J20=",
       "url": "_framework\/NorthEndOneEntrance.pdb"
     },
     {
-      "hash": "sha256-wYYm9fXzzJ8acSzj6yu2ZMsv6MOvuelGt+AMCBSyt3k=",
+      "hash": "sha256-ayCiZOMn12gxIeOSg6ekupR72kPpQsBymwXObhdiNTI=",
       "url": "_framework\/blazor.boot.json"
     }
   ],
-  "version": "UF5SQQlQ"
+  "version": "cp1kHi7t"
 };
