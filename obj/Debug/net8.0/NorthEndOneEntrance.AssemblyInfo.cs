@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NorthEndOneEntrance")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a151548ab928000214d7ae64edc803ce304b60b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31c3c258706f0deaf3da35d0223c67f2e2d0998e")]
 [assembly: System.Reflection.AssemblyProductAttribute("NorthEndOneEntrance")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NorthEndOneEntrance")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -434,6 +434,30 @@ body {
     }
 }
 
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(1.15);
+        opacity: 0;
+    }
+}
+
 /* Responsive Design - Mobile First */
 @media (max-width: 480px) {
     .check-in-container {
@@ -476,15 +500,29 @@ body {
     }
     
     .qr-card {
-        padding: 1.5rem 1.25rem;
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+    }
+    
+    .instruction-badge {
+        padding: 0.85rem 1.75rem;
+        font-size: 1.15rem;
     }
     
     .qr-code-wrapper {
-        max-width: 220px;
+        max-width: 240px;
     }
     
-    .qr-header {
-        margin-bottom: 1.25rem;
+    .qr-code {
+        padding: 1.5rem;
+    }
+    
+    .scan-instruction {
+        margin-bottom: 1.5rem;
+    }
+    
+    .qr-code-container {
+        margin-bottom: 1.5rem;
     }
     
     .footer-section {
@@ -511,7 +549,7 @@ body {
     }
     
     .qr-card {
-        padding: 2rem 1.75rem;
+        padding: 2.5rem 2rem;
     }
     
     .qr-code-wrapper {
@@ -539,7 +577,7 @@ body {
     }
     
     .qr-card {
-        padding: 3rem 2.5rem;
+        padding: 3.5rem 3rem;
     }
     
     .qr-code-wrapper {
@@ -562,11 +600,11 @@ body {
     }
     
     .qr-card {
-        padding: 3.5rem 3rem;
+        padding: 4rem 3.5rem;
     }
     
     .qr-code-wrapper {
-        max-width: 380px;
+        max-width: 360px;
     }
 }
 
