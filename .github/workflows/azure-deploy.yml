@@ -1,4 +1,4 @@
-name: Deploy to Azure Web App
+name: Deploy Docker to Azure Web App
 
 on:
   push:
@@ -7,39 +7,48 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: '8.0.x'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
     
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    
-    - name: Publish
-      run: dotnet publish --configuration Release --no-build --output ./publish
-    
-    - name: Prepare deployment package
-      run: |
-        cd ./publish/wwwroot
-        zip -r ../../deploy.zip .
-        cd ../..
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
     
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: 'oneentrance'
         publish-profile: ${{ secrets.ONEENTRANCE_WEB_PUBLISH_PROFILE }}
-        package: ./deploy.zip
+        images: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
