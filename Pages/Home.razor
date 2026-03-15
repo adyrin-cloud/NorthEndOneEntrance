@@ -6,17 +6,53 @@
 <PageTitle>North End Coffee - Check In</PageTitle>
 
 <div class="check-in-container">
-    <div class="logo-container">
-        <img src="north-end-logo.png" 
-             alt="North End Coffee" 
-             class="logo" />
-    </div>
+    <header class="header-section">
+        <div class="logo-container">
+            <img src="north-end-logo.png" 
+                 alt="North End Coffee" 
+                 class="logo" />
+        </div>
+        <div class="welcome-section">
+            <h1 class="branch-title">@branchName</h1>
+            <p class="welcome-text">Welcome! Please check in below</p>
+        </div>
+    </header>
     
-    <div class="qr-container">
-        <h2>@branchName</h2>
-        <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
-        <p class="instruction">Scan to check in</p>
-    </div>
+    <main class="main-content">
+        <div class="qr-section">
+            <div class="instruction-card">
+                <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span class="step-text">Open your camera app</span>
+                </div>
+                <div class="step-indicator">
+                    <span class="step-number">2</span>
+                    <span class="step-text">Scan the QR code below</span>
+                </div>
+                <div class="step-indicator">
+                    <span class="step-number">3</span>
+                    <span class="step-text">Complete your check-in</span>
+                </div>
+            </div>
+            
+            <div class="qr-card">
+                <div class="qr-header">
+                    <svg class="qr-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                    <h2>Employee Check-In QR Code</h2>
+                </div>
+                <div class="qr-code-wrapper">
+                    <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
+                </div>
+                <p class="qr-instruction">Point your camera at this code</p>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer-section">
+        <p class="footer-text">Need help? Please contact your supervisor</p>
+    </footer>
 </div>
 
 @code {
