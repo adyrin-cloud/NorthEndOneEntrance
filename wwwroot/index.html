@@ -32,6 +32,88 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        let stream = null;
+        
+        // Initialize camera with simple approach
+        window.initCamera = async function() {
+            try {
+                // Stop any existing stream
+                window.stopCamera();
+                
+                const video = document.getElementById('cameraFeed');
+                if (!video) {
+                    return 'Camera element not found';
+                }
+                
+                // Request camera access with simplest approach
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' },
+                    audio: false
+                });
+                
+                video.srcObject = stream;
+                await video.play();
+                
+                console.log('Camera started successfully');
+                return ''; // Success
+                
+            } catch (error) {
+                console.error('Camera error:', error);
+                
+                if (error.name === 'NotAllowedError') {
+                    return 'Camera permission denied. Please allow camera access.';
+                } else if (error.name === 'NotFoundError') {
+                    return 'No camera found on this device.';
+                } else if (error.name === 'NotReadableError') {
+                    return 'Camera is already in use.';
+                } else {
+                    return `Camera error: ${error.message}`;
+                }
+            }
+        }
+        
+        // Capture photo from video stream
+        window.takePhoto = function() {
+            try {
+                const video = document.getElementById('cameraFeed');
+                const canvas = document.getElementById('photoCanvas');
+                
+                if (!video || !canvas) {
+                    return '';
+                }
+                
+                // Set canvas size to match video
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // Draw flipped image (mirror)
+                const ctx = canvas.getContext('2d');
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(video, 0, 0);
+                
+                // Stop camera after capture
+                window.stopCamera();
+                
+                // Return base64 image
+                return canvas.toDataURL('image/jpeg', 0.9);
+                
+            } catch (error) {
+                console.error('Capture error:', error);
+                return '';
+            }
+        }
+        
+        // Stop camera stream
+        window.stopCamera = function() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                console.log('Camera stopped');
+            }
+        }
+    </script>
 </body>
 
 </html>

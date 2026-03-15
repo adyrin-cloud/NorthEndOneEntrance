@@ -7,44 +7,150 @@
 <PageTitle>North End Coffee - Check In</PageTitle>
 
 <div class="check-in-container">
-    <header class="header-section">
-        <div class="clock-container">
-            <div class="digital-clock">
-                <div class="time-display">@currentTime</div>
-                <div class="date-display">@currentDate</div>
+    <!-- Two-column layout: Logo on left, Check-in on right -->
+    <div class="main-layout">
+        <!-- Left Column: Logo and Branding -->
+        <div class="left-column">
+            <div class="logo-section">
+                <img src="north-end-logo.png" alt="North End Coffee" class="logo" />
+                <h1 class="branch-title">@branchName</h1>
+                <div class="digital-clock">@currentTime</div>
+                
+                <!-- QR Code for Mobile Check-In -->
+                <div class="qr-section">
+                    <div class="qr-label">Quick Mobile Check-In</div>
+                    <div class="qr-code-box">
+                        <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code-img" />
+                    </div>
+                    <div class="qr-instruction">Scan with your phone</div>
+                </div>
             </div>
         </div>
-        <div class="logo-container">
-            <img src="north-end-logo.png" 
-                 alt="North End Coffee" 
-                 class="logo" />
-        </div>
-        <div class="welcome-section">
-            <h1 class="branch-title">@branchName</h1>
-            <p class="welcome-text">Welcome! Please check in below</p>
-        </div>
-    </header>
-    
-    <main class="main-content">
-        <div class="qr-section">
-            <h2 class="scan-title">Scan to Check In</h2>
-            <div class="qr-wrapper">
-                <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
+
+        <!-- Vertical Divider -->
+        <div class="divider-vertical"></div>
+
+        <!-- Right Column: Check-in Area -->
+        <div class="right-column">
+            @if (currentStep == CheckInStep.EnterID)
+            {
+                <!-- Step 1: Enter Employee ID -->
+                <div class="step-container">
+                    <h2 class="step-title">Enter Your Employee ID</h2>
+            
+            <div class="id-display">
+                @if (string.IsNullOrEmpty(employeeId))
+                {
+                    <span class="placeholder">- - - - -</span>
+                }
+                else
+                {
+                    <span class="employee-id">@employeeId</span>
+                }
             </div>
+
+            <div class="keypad">
+                @for (int i = 1; i <= 9; i++)
+                {
+                    var digit = i.ToString();
+                    <button class="key-btn" @onclick="@(() => AddDigit(digit))">@digit</button>
+                }
+                <button class="key-btn clear-btn" @onclick="ClearInput">
+                    <span class="delete-label">⌫ Delete</span>
+                </button>
+                <button class="key-btn" @onclick="@(() => AddDigit("0"))">0</button>
+                <button class="key-btn next-btn" @onclick="GoToCamera" disabled="@(employeeId.Length < 4)">
+                    Next →
+                </button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(statusMessage))
+            {
+                <div class="status-message @statusClass">@statusMessage</div>
+            }
+                </div>
+            }
+            else if (currentStep == CheckInStep.TakePhoto)
+            {
+                <!-- Step 2: Take Photo -->
+                <div class="camera-fullscreen">
+            @if (!string.IsNullOrEmpty(cameraError))
+            {
+                <div class="error-panel">
+                    <h2>⚠️ Camera Error</h2>
+                    <p>@cameraError</p>
+                    <button class="action-btn" @onclick="RetryCamera">Retry Camera</button>
+                    <button class="action-btn secondary" @onclick="GoBackToID">← Back to ID Entry</button>
+                </div>
+            }
+            else if (!string.IsNullOrEmpty(capturedPhoto))
+            {
+                <!-- Photo Preview -->
+                <div class="photo-review">
+                    <h2>Review Your Photo</h2>
+                    <img src="@capturedPhoto" alt="Your photo" class="captured-photo" />
+                    <div class="photo-actions">
+                        <button class="action-btn secondary" @onclick="RetakePhoto">
+                            <span class="retake-icon">↻</span> Retake Photo
+                        </button>
+                        <button class="action-btn primary" @onclick="ConfirmCheckIn">
+                            <span class="confirm-icon">✓</span> Confirm & Check In
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Live Camera View -->
+                <div class="camera-view">
+                    <h2 class="camera-title">Take Your Photo</h2>
+                    <div class="video-container">
+                        <video id="cameraFeed" autoplay playsinline muted></video>
+                        <canvas id="photoCanvas" style="display: none;"></canvas>
+                    </div>
+                    <div class="camera-actions">
+                        <button class="action-btn secondary" @onclick="GoBackToID">← Back to ID Entry</button>
+                        <button class="action-btn capture" @onclick="TakePhoto">
+                            <span class="shutter-icon"></span>
+                            <span>Capture Photo</span>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+            else if (currentStep == CheckInStep.Success)
+            {
+                <!-- Step 3: Success -->
+                <div class="success-screen">
+            <div class="success-icon">✓</div>
+            <h2>Check-In Successful!</h2>
+            <p>Employee ID: <strong>@employeeId</strong></p>
+            <p class="timestamp">@DateTime.Now.ToString("h:mm:ss tt")</p>
+                    <button class="action-btn" @onclick="Reset">
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">✓</span> Complete Check-In
+                    </button>
+                </div>
+            }
         </div>
-    </main>
-    
-    <footer class="footer-section">
-        <p class="footer-text">Need help? Please contact your supervisor</p>
-    </footer>
+    </div>
 </div>
 
+@inject IJSRuntime JSRuntime
+
 @code {
-    private string qrCodeDataUri = string.Empty;
-    private string branchName = "Gulshan Branch"; // Change this to your branch name
+    private enum CheckInStep { EnterID, TakePhoto, Success }
+    
+    private CheckInStep currentStep = CheckInStep.EnterID;
+    private string branchName = "Gulshan Branch";
     private string currentTime = "";
-    private string currentDate = "";
     private Timer? timer;
+    private string employeeId = string.Empty;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+    private string capturedPhoto = string.Empty;
+    private string cameraError = string.Empty;
+    private string qrCodeDataUri = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -59,7 +165,6 @@
             qrCodeDataUri = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
         }
         
-        // Initialize clock
         UpdateClock();
         timer = new Timer(async _ => 
         {
@@ -70,9 +175,126 @@
     
     private void UpdateClock()
     {
-        var now = DateTime.Now;
-        currentTime = now.ToString("HH:mm:ss");
-        currentDate = now.ToString("dddd, MMMM dd, yyyy");
+        currentTime = DateTime.Now.ToString("h:mm:ss tt");
+    }
+    
+    private void AddDigit(string digit)
+    {
+        if (employeeId.Length < 10)
+        {
+            employeeId += digit;
+            statusMessage = string.Empty;
+        }
+    }
+    
+    private void ClearInput()
+    {
+        if (employeeId.Length > 0)
+        {
+            employeeId = employeeId.Substring(0, employeeId.Length - 1);
+        }
+        statusMessage = string.Empty;
+    }
+    
+    private async Task GoToCamera()
+    {
+        if (employeeId.Length >= 4)
+        {
+            currentStep = CheckInStep.TakePhoto;
+            cameraError = string.Empty;
+            capturedPhoto = string.Empty;
+            StateHasChanged();
+            
+            // Start camera after short delay to ensure DOM is ready
+            await Task.Delay(300);
+            await StartCamera();
+        }
+    }
+    
+    private async Task StartCamera()
+    {
+        try
+        {
+            var error = await JSRuntime.InvokeAsync<string>("initCamera");
+            if (!string.IsNullOrEmpty(error))
+            {
+                cameraError = error;
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            cameraError = $"Failed to start camera: {ex.Message}";
+            StateHasChanged();
+        }
+    }
+    
+    private async Task TakePhoto()
+    {
+        try
+        {
+            capturedPhoto = await JSRuntime.InvokeAsync<string>("takePhoto");
+            if (string.IsNullOrEmpty(capturedPhoto))
+            {
+                cameraError = "Failed to capture photo. Please try again.";
+            }
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            cameraError = $"Capture error: {ex.Message}";
+            StateHasChanged();
+        }
+    }
+    
+    private async Task RetakePhoto()
+    {
+        capturedPhoto = string.Empty;
+        cameraError = string.Empty;
+        StateHasChanged();
+        await Task.Delay(100);
+        await StartCamera();
+    }
+    
+    private async Task RetryCamera()
+    {
+        cameraError = string.Empty;
+        StateHasChanged();
+        await Task.Delay(100);
+        await StartCamera();
+    }
+    
+    private async Task GoBackToID()
+    {
+        await JSRuntime.InvokeVoidAsync("stopCamera");
+        currentStep = CheckInStep.EnterID;
+        capturedPhoto = string.Empty;
+        cameraError = string.Empty;
+        StateHasChanged();
+    }
+    
+    private async Task ConfirmCheckIn()
+    {
+        await JSRuntime.InvokeVoidAsync("stopCamera");
+        
+        // TODO: Send employeeId and capturedPhoto to server
+        // For now, just show success
+        currentStep = CheckInStep.Success;
+        StateHasChanged();
+        
+        // Auto-reset after 3 seconds
+        await Task.Delay(3000);
+        Reset();
+    }
+    
+    private void Reset()
+    {
+        currentStep = CheckInStep.EnterID;
+        employeeId = string.Empty;
+        capturedPhoto = string.Empty;
+        cameraError = string.Empty;
+        statusMessage = string.Empty;
+        StateHasChanged();
     }
     
     public void Dispose()
