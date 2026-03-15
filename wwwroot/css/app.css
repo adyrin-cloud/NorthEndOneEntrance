@@ -75,14 +75,14 @@ a, .btn-link {
 
     .loading-progress circle {
         fill: none;
-        stroke: #e0e0e0;
+        stroke: #e8ddd5;
         stroke-width: 0.6rem;
         transform-origin: 50% 50%;
         transform: rotate(-90deg);
     }
 
         .loading-progress circle:last-child {
-            stroke: #1b6ec2;
+            stroke: #7e3e28;
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }
@@ -98,12 +98,13 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
-/* Check-in Page Styles */
+/* Check-in Page Styles - North End Coffee Branding */
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #f5f0eb 0%, #e8ddd5 100%);
     min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .check-in-container {
@@ -118,66 +119,114 @@ body {
 
 .logo-container {
     text-align: center;
+    animation: fadeIn 0.8s ease-in;
 }
 
 .logo {
-    max-width: 400px;
+    max-width: 450px;
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 8px rgba(107, 58, 34, 0.15));
 }
 
 .qr-container {
     text-align: center;
     background: white;
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(107, 58, 34, 0.12);
     max-width: 500px;
     width: 100%;
+    border-top: 4px solid #7e3e28;
+    animation: slideUp 0.6s ease-out;
 }
 
 .qr-container h2 {
-    margin: 0 0 1.5rem 0;
-    color: #333;
+    margin: 0 0 0.5rem 0;
+    color: #111827;
     font-size: 2rem;
     font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.qr-container h2::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #7e3e28;
+    border-radius: 50%;
+    margin-right: 12px;
+    vertical-align: middle;
 }
 
 .qr-code {
     max-width: 300px;
     width: 100%;
     height: auto;
-    margin: 1rem auto;
+    margin: 2rem auto 1rem;
     display: block;
-    border: 3px solid #f0f0f0;
-    border-radius: 10px;
-    padding: 1rem;
-    background: white;
+    border: 2px solid #e8ddd5;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fafaf9;
+    transition: transform 0.3s ease;
+}
+
+.qr-code:hover {
+    transform: scale(1.02);
 }
 
 .instruction {
     margin: 1.5rem 0 0 0;
-    color: #666;
-    font-size: 1.2rem;
-    font-weight: 500;
+    color: #6b3a22;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 768px) {
     .logo {
-        max-width: 250px;
+        max-width: 280px;
     }
     
     .qr-container {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .qr-container h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .qr-code {
-        max-width: 200px;
+        max-width: 220px;
+    }
+    
+    .instruction {
+        font-size: 1rem;
     }
 }
 
