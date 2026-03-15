@@ -4,6 +4,7 @@ public interface IEmployeeCheckInService
 {
     Task<CheckInResult> ProcessCheckInAsync(string employeeId, string photoBase64);
     Task<EmployeeStatus> GetEmployeeStatusAsync(string employeeId);
+    bool ValidateEmployeeId(string employeeId);
 }
 
 public class CheckInResult

@@ -14,18 +14,15 @@ public class MockEmployeeCheckInService : IEmployeeCheckInService
 
     public Task<CheckInResult> ProcessCheckInAsync(string employeeId, string photoBase64)
     {
-        // Validate employee ID (must be 4-10 digits)
-        if (string.IsNullOrWhiteSpace(employeeId) || employeeId.Length < 4)
+        // Employee ID is already validated at UI level, but double-check for safety
+        if (!ValidateEmployeeId(employeeId))
         {
             return Task.FromResult(new CheckInResult
             {
                 Success = false,
-                ErrorMessage = "Invalid employee ID. Must be at least 4 digits."
+                ErrorMessage = $"Employee ID {employeeId} not found in the system."
             });
         }
-
-        // Optional: Validate if employee ID exists in the system
-        // For now, we'll accept any valid format
 
         var status = _employeeStatuses.GetOrAdd(employeeId, _ => new EmployeeStatus
         {
@@ -77,9 +74,13 @@ public class MockEmployeeCheckInService : IEmployeeCheckInService
         return Task.FromResult(status);
     }
 
-    // Helper method to check if employee is valid (optional for future use)
-    public bool IsValidEmployeeId(string employeeId)
+    // Validate employee ID
+    public bool ValidateEmployeeId(string employeeId)
     {
+        if (string.IsNullOrWhiteSpace(employeeId) || employeeId.Length < 4)
+        {
+            return false;
+        }
         return _validEmployeeIds.Contains(employeeId);
     }
 }

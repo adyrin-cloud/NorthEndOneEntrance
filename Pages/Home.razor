@@ -4,12 +4,94 @@
 @using System.IO
 @using NorthEndOneEntrance.Services
 @inject IEmployeeCheckInService CheckInService
+@inject ISecurityService SecurityService
+@inject IBranchService BranchService
+@inject AppStateService AppState
 @inject IJSRuntime JSRuntime
 @implements IDisposable
 
 <PageTitle>North End Coffee - Check In</PageTitle>
 
+@if (!AppState.IsAuthenticated)
+{
+    <!-- PIN Entry Screen -->
+    <div class="auth-screen">
+        <div class="auth-container">
+            <img src="north-end-logo.png" alt="North End Coffee" class="auth-logo" />
+            <h1 class="auth-title">Entrance System</h1>
+            <p class="auth-subtitle">Enter Security PIN to Continue</p>
+            
+            <div class="pin-display">
+                @if (string.IsNullOrEmpty(securityPin))
+                {
+                    <span class="placeholder">• • • •</span>
+                }
+                else
+                {
+                    <span class="pin-dots">@(new string('•', securityPin.Length))</span>
+                }
+            </div>
+
+            <div class="keypad">
+                @for (int i = 1; i <= 9; i++)
+                {
+                    int digit = i;
+                    <button class="key-btn" @onclick="() => AddPinDigit(digit.ToString())">@i</button>
+                }
+                <button class="key-btn clear-btn" @onclick="ClearPin">
+                    <div class="delete-label">⌫ Delete</div>
+                </button>
+                <button class="key-btn" @onclick='() => AddPinDigit("0")'>0</button>
+                <button class="key-btn next-btn" @onclick="ValidatePin" disabled="@(securityPin.Length < 4)">
+                    Next →
+                </button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(pinError))
+            {
+                <div class="status-message error">@pinError</div>
+            }
+        </div>
+    </div>
+}
+else if (AppState.SelectedBranch == null)
+{
+    <!-- Branch Selection Screen -->
+    <div class="branch-selection-screen">
+        <div class="branch-container">
+            <img src="north-end-logo.png" alt="North End Coffee" class="auth-logo" />
+            <h1 class="auth-title">Select Branch Location</h1>
+            <p class="auth-subtitle">Choose your cafe branch</p>
+
+            @if (branches == null)
+            {
+                <div class="loading">Loading branches...</div>
+            }
+            else
+            {
+                <div class="branch-grid">
+                    @foreach (var branch in branches)
+                    {
+                        <button class="branch-card" @onclick="() => SelectBranch(branch)">
+                            <div class="branch-name">@branch.Name</div>
+                            <div class="branch-location">@branch.Location</div>
+                            <div class="branch-code">@branch.Code</div>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <!-- Check-In System (Existing) -->
 <div class="check-in-container">
+    <!-- Logout Button -->
+    <button class="logout-btn" @onclick="LogoutAsync" title="Change Branch or Logout">
+        ⚙️ Settings
+    </button>
+    
     <!-- Two-column layout: Logo on left, Check-in on right -->
     <div class="main-layout">
         <!-- Left Column: Logo and Branding -->
@@ -21,11 +103,10 @@
                 
                 <!-- QR Code for Mobile Check-In -->
                 <div class="qr-section">
-                    <div class="qr-label">Quick Mobile Check-In</div>
+                    <div class="qr-label">Quick Mobile Entrance</div>
                     <div class="qr-code-box">
                         <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code-img" />
                     </div>
-                    <div class="qr-instruction">Scan with your phone</div>
                 </div>
             </div>
         </div>
@@ -139,14 +220,19 @@
         </div>
     </div>
 </div>
-
-@inject IJSRuntime JSRuntime
+}
 
 @code {
     private enum CheckInStep { EnterID, TakePhoto, Success }
     
+    // Security and Branch Selection
+    private string securityPin = string.Empty;
+    private string pinError = string.Empty;
+    private List<Branch>? branches;
+    
+    // Check-in variables
     private CheckInStep currentStep = CheckInStep.EnterID;
-    private string branchName = "Gulshan Branch";
+    private string branchName = "";
     private string currentTime = "";
     private Timer? timer;
     private string employeeId = string.Empty;
@@ -159,10 +245,125 @@
     private DateTime checkInTimestamp = DateTime.Now;
     private string successMessage = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        // Generate QR code for check-in URL
-        string checkInUrl = "https://www.northendcoffee.com/checkin"; // Replace with actual check-in URL
+        // Initialize app state from localStorage
+        await AppState.InitializeAsync();
+        
+        // Load branches when showing branch selection screen
+        if (AppState.IsAuthenticated && AppState.SelectedBranch == null)
+        {
+            await LoadBranches();
+        }
+
+        // Update branch name and initialize if a branch is already selected
+        if (AppState.SelectedBranch != null)
+        {
+            branchName = AppState.SelectedBranch.Name;
+            InitializeQRCode();
+            UpdateClock();
+            
+            if (timer == null)
+            {
+                timer = new Timer(async _ => 
+                {
+                    UpdateClock();
+                    await InvokeAsync(StateHasChanged);
+                }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            }
+        }
+    }
+    
+    private async Task LoadBranches()
+    {
+        try
+        {
+            branches = await BranchService.GetBranchesAsync();
+        }
+        catch (Exception)
+        {
+            branches = new List<Branch>();
+        }
+    }
+    
+    // PIN Entry Methods
+    private void AddPinDigit(string digit)
+    {
+        if (securityPin.Length < 6)
+        {
+            securityPin += digit;
+            pinError = string.Empty;
+        }
+    }
+    
+    private void ClearPin()
+    {
+        if (securityPin.Length > 0)
+        {
+            securityPin = securityPin.Substring(0, securityPin.Length - 1);
+        }
+        pinError = string.Empty;
+    }
+    
+    private async Task ValidatePin()
+    {
+        if (SecurityService.ValidatePin(securityPin))
+        {
+            AppState.IsAuthenticated = true;
+            await LoadBranches();
+            securityPin = string.Empty;
+            pinError = string.Empty;
+        }
+        else
+        {
+            pinError = "Invalid PIN. Please try again.";
+            securityPin = string.Empty;
+        }
+    }
+    
+    private async Task LogoutAsync()
+    {
+        // Reset all state
+        await AppState.ResetAsync();
+        
+        // Reset component state
+        employeeId = string.Empty;
+        capturedPhoto = string.Empty;
+        currentStep = CheckInStep.EnterID;
+        statusMessage = string.Empty;
+        branchName = string.Empty;
+        qrCodeDataUri = string.Empty;
+        
+        // Stop timer
+        timer?.Dispose();
+        timer = null;
+        
+        StateHasChanged();
+    }
+    
+    // Branch Selection Methods
+    private void SelectBranch(Branch branch)
+    {
+        AppState.SelectedBranch = branch;
+        branchName = branch.Name;
+        
+        // Initialize QR code for the selected branch
+        InitializeQRCode();
+        
+        // Start the clock timer
+        UpdateClock();
+        timer = new Timer(async _ => 
+        {
+            UpdateClock();
+            await InvokeAsync(StateHasChanged);
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        
+        StateHasChanged();
+    }
+    
+    private void InitializeQRCode()
+    {
+        string checkInUrl = "https://www.northendcoffee.com/checkin";
         
         using (var qrGenerator = new QRCodeGenerator())
         {
@@ -171,13 +372,6 @@
             var qrCodeBytes = qrCode.GetGraphic(20);
             qrCodeDataUri = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
         }
-        
-        UpdateClock();
-        timer = new Timer(async _ => 
-        {
-            UpdateClock();
-            await InvokeAsync(StateHasChanged);
-        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
     }
     
     private void UpdateClock()
@@ -207,6 +401,15 @@
     {
         if (employeeId.Length >= 4)
         {
+            // Validate employee ID first
+            if (!CheckInService.ValidateEmployeeId(employeeId))
+            {
+                statusMessage = $"Employee ID {employeeId} not found in the system.";
+                statusClass = "error";
+                StateHasChanged();
+                return;
+            }
+            
             // Check employee status to determine if this will be check-in or check-out
             var status = await CheckInService.GetEmployeeStatusAsync(employeeId);
             isCheckIn = !status.IsCheckedIn; // If not checked in, next action is check-in
@@ -214,6 +417,7 @@
             currentStep = CheckInStep.TakePhoto;
             cameraError = string.Empty;
             capturedPhoto = string.Empty;
+            statusMessage = string.Empty;
             StateHasChanged();
             
             // Start camera after short delay to ensure DOM is ready
