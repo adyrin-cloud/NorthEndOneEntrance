@@ -13,7 +13,7 @@
     </div>
     
     <div class="qr-container">
-        <h2>Employee Check-In</h2>
+        <h2>@branchName</h2>
         <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
         <p class="instruction">Scan to check in</p>
     </div>
@@ -21,6 +21,7 @@
 
 @code {
     private string qrCodeDataUri = string.Empty;
+    private string branchName = "Gulshan Branch"; // Change this to your branch name
 
     protected override void OnInitialized()
     {

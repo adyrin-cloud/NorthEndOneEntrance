@@ -1,7 +1,7 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-Tlg56sDived34tmi\/BdG6kbFE6d8UGinhowR1Y7uHxQ=",
+      "hash": "sha256-T7uaxCWKU+1GdazYRuIsw5\/U4KnMZsWOVIheA0\/BVj8=",
       "url": "css\/app.css"
     },
     {
@@ -861,17 +861,17 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-H1pahIKzPRL2gj+n2dw9p2vc39MwjhwZsOel2QZcwSc=",
+      "hash": "sha256-5XG92ywzkLrMRRCl0DhEP0YW1epm9Tmve6jS5t+eca4=",
       "url": "_framework\/NorthEndOneEntrance.wasm"
     },
     {
-      "hash": "sha256-BRfF4SFEUJM4VxA0GIE9xWJZfzxOpotrZFGs4Co3B3c=",
+      "hash": "sha256-Q+PgNVJdO8ad2pd3SGuLUkxS3d80n2nVv0irPDDWheE=",
       "url": "_framework\/NorthEndOneEntrance.pdb"
     },
     {
-      "hash": "sha256-D943R3+g8KBuOgdP7+qTWaO+YRhdRy10Co57AYBHuks=",
+      "hash": "sha256-MG7Y\/N1V7fkjt0QX7yG5T2Bo0xmgudfXtq0nAoPmwNc=",
       "url": "_framework\/blazor.boot.json"
     }
   ],
-  "version": "xcCOqie+"
+  "version": "Q9wJ\/s3l"
 };
