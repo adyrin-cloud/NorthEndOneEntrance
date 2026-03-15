@@ -1,0 +1,17 @@
+services:
+  northend-checkin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: northend-one-entrance
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - northend-network
+
+networks:
+  northend-network:
+    driver: bridge
