@@ -2,6 +2,9 @@
 @using QRCoder
 @using System.Drawing
 @using System.IO
+@using NorthEndOneEntrance.Services
+@inject IEmployeeCheckInService CheckInService
+@inject IJSRuntime JSRuntime
 @implements IDisposable
 
 <PageTitle>North End Coffee - Check In</PageTitle>
@@ -87,14 +90,14 @@
             {
                 <!-- Photo Preview -->
                 <div class="photo-review">
-                    <h2>Review Your Photo</h2>
+                    <h2>Review Your Photo - @(isCheckIn ? "Check-In" : "Check-Out")</h2>
                     <img src="@capturedPhoto" alt="Your photo" class="captured-photo" />
                     <div class="photo-actions">
                         <button class="action-btn secondary" @onclick="RetakePhoto">
                             <span class="retake-icon">↻</span> Retake Photo
                         </button>
                         <button class="action-btn primary" @onclick="ConfirmCheckIn">
-                            <span class="confirm-icon">✓</span> Confirm & Check In
+                            <span class="confirm-icon">✓</span> Confirm & @(isCheckIn ? "Check In" : "Check Out")
                         </button>
                     </div>
                 </div>
@@ -103,7 +106,7 @@
             {
                 <!-- Live Camera View -->
                 <div class="camera-view">
-                    <h2 class="camera-title">Take Your Photo</h2>
+                    <h2 class="camera-title">Take Your Photo for @(isCheckIn ? "Check-In" : "Check-Out")</h2>
                     <div class="video-container">
                         <video id="cameraFeed" autoplay playsinline muted></video>
                         <canvas id="photoCanvas" style="display: none;"></canvas>
@@ -124,11 +127,12 @@
                 <!-- Step 3: Success -->
                 <div class="success-screen">
             <div class="success-icon">✓</div>
-            <h2>Check-In Successful!</h2>
+            <h2>@(isCheckIn ? "Check-In Successful!" : "Check-Out Successful!")</h2>
             <p>Employee ID: <strong>@employeeId</strong></p>
-            <p class="timestamp">@DateTime.Now.ToString("h:mm:ss tt")</p>
+            <p class="timestamp">@checkInTimestamp.ToString("h:mm:ss tt")</p>
+            <p style="color: #6b3a22; margin-top: 1rem;">@successMessage</p>
                     <button class="action-btn" @onclick="Reset">
-                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">✓</span> Complete Check-In
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">✓</span> Complete
                     </button>
                 </div>
             }
@@ -151,6 +155,9 @@
     private string capturedPhoto = string.Empty;
     private string cameraError = string.Empty;
     private string qrCodeDataUri = string.Empty;
+    private bool isCheckIn = true;
+    private DateTime checkInTimestamp = DateTime.Now;
+    private string successMessage = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -200,6 +207,10 @@
     {
         if (employeeId.Length >= 4)
         {
+            // Check employee status to determine if this will be check-in or check-out
+            var status = await CheckInService.GetEmployeeStatusAsync(employeeId);
+            isCheckIn = !status.IsCheckedIn; // If not checked in, next action is check-in
+            
             currentStep = CheckInStep.TakePhoto;
             cameraError = string.Empty;
             capturedPhoto = string.Empty;
@@ -277,14 +288,27 @@
     {
         await JSRuntime.InvokeVoidAsync("stopCamera");
         
-        // TODO: Send employeeId and capturedPhoto to server
-        // For now, just show success
-        currentStep = CheckInStep.Success;
-        StateHasChanged();
+        // Call the check-in service
+        var result = await CheckInService.ProcessCheckInAsync(employeeId, capturedPhoto);
         
-        // Auto-reset after 3 seconds
-        await Task.Delay(3000);
-        Reset();
+        if (result.Success)
+        {
+            isCheckIn = result.IsCheckIn;
+            checkInTimestamp = result.Timestamp;
+            successMessage = result.Message;
+            currentStep = CheckInStep.Success;
+            StateHasChanged();
+            
+            // Auto-reset after 3 seconds
+            await Task.Delay(3000);
+            Reset();
+        }
+        else
+        {
+            // Show error message
+            cameraError = result.ErrorMessage ?? "An error occurred during check-in.";
+            StateHasChanged();
+        }
     }
     
     private void Reset()
