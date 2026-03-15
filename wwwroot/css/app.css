@@ -233,11 +233,13 @@ body {
 
 .qr-section {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     height: 100%;
+    gap: 2rem;
 }
 
 /* Instruction Card */
@@ -434,29 +436,7 @@ body {
     }
 }
 
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
 
-@keyframes pulse-ring {
-    0% {
-        transform: scale(0.9);
-        opacity: 0.8;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.4;
-    }
-    100% {
-        transform: scale(1.15);
-        opacity: 0;
-    }
-}
 
 /* Responsive Design - Mobile First */
 @media (max-width: 480px) {
@@ -496,33 +476,15 @@ body {
     }
     
     .qr-section {
-        max-width: 100%;
+        gap: 1.5rem;
     }
     
-    .qr-card {
-        padding: 2rem 1.5rem;
-        border-radius: 20px;
+    .scan-title {
+        font-size: 1.5rem;
     }
     
-    .instruction-badge {
-        padding: 0.85rem 1.75rem;
-        font-size: 1.15rem;
-    }
-    
-    .qr-code-wrapper {
-        max-width: 240px;
-    }
-    
-    .qr-code {
-        padding: 1.5rem;
-    }
-    
-    .scan-instruction {
-        margin-bottom: 1.5rem;
-    }
-    
-    .qr-code-container {
-        margin-bottom: 1.5rem;
+    .qr-wrapper {
+        padding: 1.75rem;
     }
     
     .footer-section {
@@ -548,12 +510,8 @@ body {
         margin-bottom: 1.15rem;
     }
     
-    .qr-card {
-        padding: 2.5rem 2rem;
-    }
-    
-    .qr-code-wrapper {
-        max-width: 280px;
+    .qr-wrapper {
+        padding: 2rem;
     }
 }
 
@@ -576,12 +534,8 @@ body {
         max-width: 380px;
     }
     
-    .qr-card {
-        padding: 3.5rem 3rem;
-    }
-    
-    .qr-code-wrapper {
-        max-width: 340px;
+    .qr-wrapper {
+        padding: 2.5rem;
     }
 }
 
@@ -599,12 +553,8 @@ body {
         max-width: 400px;
     }
     
-    .qr-card {
-        padding: 4rem 3.5rem;
-    }
-    
-    .qr-code-wrapper {
-        max-width: 360px;
+    .qr-wrapper {
+        padding: 3rem;
     }
 }
 

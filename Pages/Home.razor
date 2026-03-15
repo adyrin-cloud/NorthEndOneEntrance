@@ -27,25 +27,9 @@
     
     <main class="main-content">
         <div class="qr-section">
-            <div class="qr-card">
-                <div class="scan-instruction">
-                    <div class="instruction-badge">Scan to Check In</div>
-                    <p class="instruction-subtitle">Use your phone camera</p>
-                </div>
-                
-                <div class="qr-code-container">
-                    <div class="qr-pulse-ring"></div>
-                    <div class="qr-code-wrapper">
-                        <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
-                    </div>
-                </div>
-                
-                <div class="help-text">
-                    <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Point your camera at the code above</span>
-                </div>
+            <h2 class="scan-title">Scan to Check In</h2>
+            <div class="qr-wrapper">
+                <img src="@qrCodeDataUri" alt="Check-in QR Code" class="qr-code" />
             </div>
         </div>
     </main>
