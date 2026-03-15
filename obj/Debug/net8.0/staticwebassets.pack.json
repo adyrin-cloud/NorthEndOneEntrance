@@ -53,6 +53,10 @@
       "PackagePath": "staticwebassets\\manifest.webmanifest"
     },
     {
+      "Id": "C:\\Projects\\NorthEndOneEntrance\\wwwroot\\north-end-logo.png",
+      "PackagePath": "staticwebassets\\north-end-logo.png"
+    },
+    {
       "Id": "C:\\Projects\\NorthEndOneEntrance\\wwwroot\\sample-data\\weather.json",
       "PackagePath": "staticwebassets\\sample-data\\weather.json"
     },

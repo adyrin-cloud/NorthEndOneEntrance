@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UPOKpKl3eMmjFnXNzcxpu1yKHOroKW3b3F2nuMSFgNo=",
+  "Hash": "KQLeMAN4IMMmK5VEMn5ELRJ1UvtmnJhclh+rDs10qis=",
   "Source": "NorthEndOneEntrance",
   "BasePath": "/",
   "Mode": "Root",
@@ -8147,6 +8147,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\manifest.webmanifest"
+    },
+    {
+      "Identity": "C:\\Projects\\NorthEndOneEntrance\\wwwroot\\north-end-logo.png",
+      "SourceId": "NorthEndOneEntrance",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\NorthEndOneEntrance\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "north-end-logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\north-end-logo.png"
     },
     {
       "Identity": "C:\\Projects\\NorthEndOneEntrance\\wwwroot\\sample-data\\weather.json",

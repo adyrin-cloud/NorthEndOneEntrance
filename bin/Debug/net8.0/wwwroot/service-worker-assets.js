@@ -33,6 +33,10 @@
       "url": "manifest.webmanifest"
     },
     {
+      "hash": "sha256-a8P+2MwNtaF6gyF+eWkwEDlStY60u2N7F2ujwK5l8Ks=",
+      "url": "north-end-logo.png"
+    },
+    {
       "hash": "sha256-enKgCMkYmCpfEcmg6Annbmc40VZ\/A6aYYSQjZfVn2cU=",
       "url": "sample-data\/weather.json"
     },
@@ -131,6 +135,18 @@
     {
       "hash": "sha256-f1i9uGTJLgLutmqKw24yeY6GAWxge0wyMM51aU0ESTA=",
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
+    },
+    {
+      "hash": "sha256-1kUoFxSGzlbndQM4zal3G\/YBdouUTf444lDjqhuWALU=",
+      "url": "_framework\/Microsoft.Win32.SystemEvents.wasm"
+    },
+    {
+      "hash": "sha256-4TK6yB5uwDqrse6OA6+FmX1spHTQV\/3Ltbl\/ysN02\/Y=",
+      "url": "_framework\/QRCoder.wasm"
+    },
+    {
+      "hash": "sha256-K4kz7R8w\/w1hXO31g3GdLNqPgu4KDENnDuMEnMfDDnc=",
+      "url": "_framework\/System.Drawing.Common.wasm"
     },
     {
       "hash": "sha256-JqVBy6SV+3qk+IK3VJiyIDt9CsVk6b1\/ytTXmrI4mTM=",
@@ -845,29 +861,17 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-XgHHvNziN6zFgMsl5ab3gvWn6xgAOhYHn+lFTcYTFSs=",
+      "hash": "sha256-H1pahIKzPRL2gj+n2dw9p2vc39MwjhwZsOel2QZcwSc=",
       "url": "_framework\/NorthEndOneEntrance.wasm"
     },
     {
-      "hash": "sha256-LahGT24avTvkmYCwCVcDq6YfnxXozqzga+Ir1Qwtmcg=",
+      "hash": "sha256-BRfF4SFEUJM4VxA0GIE9xWJZfzxOpotrZFGs4Co3B3c=",
       "url": "_framework\/NorthEndOneEntrance.pdb"
     },
     {
-      "hash": "sha256-sEFsIahWGqhISawCo8RT2U\/9R4GIPZZnGky6uubf778=",
+      "hash": "sha256-D943R3+g8KBuOgdP7+qTWaO+YRhdRy10Co57AYBHuks=",
       "url": "_framework\/blazor.boot.json"
-    },
-    {
-      "hash": "sha256-1kUoFxSGzlbndQM4zal3G\/YBdouUTf444lDjqhuWALU=",
-      "url": "_framework\/Microsoft.Win32.SystemEvents.wasm"
-    },
-    {
-      "hash": "sha256-4TK6yB5uwDqrse6OA6+FmX1spHTQV\/3Ltbl\/ysN02\/Y=",
-      "url": "_framework\/QRCoder.wasm"
-    },
-    {
-      "hash": "sha256-K4kz7R8w\/w1hXO31g3GdLNqPgu4KDENnDuMEnMfDDnc=",
-      "url": "_framework\/System.Drawing.Common.wasm"
     }
   ],
-  "version": "mNlt1D4A"
+  "version": "Kf7HsKmh"
 };
