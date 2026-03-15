@@ -218,11 +218,11 @@ body {
 }
 
 .qr-section {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    max-width: 900px;
+    max-width: 600px;
     height: 100%;
 }
 
@@ -290,11 +290,11 @@ body {
 /* QR Card */
 .qr-card {
     background: linear-gradient(to bottom right, #ffffff 0%, #fafafa 100%);
-    padding: 1.75rem 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(107, 58, 34, 0.12),
-                0 4px 8px rgba(107, 58, 34, 0.06);
-    border-top: 5px solid #7e3e28;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(107, 58, 34, 0.15),
+                0 6px 12px rgba(107, 58, 34, 0.08);
+    border-top: 6px solid #7e3e28;
     text-align: center;
     animation: slideUp 0.6s ease-out;
     display: flex;
@@ -302,6 +302,7 @@ body {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .qr-card::before {
@@ -342,8 +343,8 @@ body {
 .qr-code-wrapper {
     display: flex;
     justify-content: center;
-    margin: 0 auto 1rem;
-    max-width: 280px;
+    margin: 0 auto 1.5rem;
+    max-width: 350px;
 }
 
 .qr-code {
@@ -457,38 +458,19 @@ body {
     }
     
     .qr-section {
-        gap: 1rem;
-    }
-    
-    .instruction-card {
-        padding: 1.25rem 1.25rem;
+        max-width: 100%;
     }
     
     .qr-card {
-        padding: 1.25rem 1rem;
-    }
-    
-    .step-number {
-        width: 28px;
-        height: 28px;
-        font-size: 0.9rem;
-        margin-right: 0.75rem;
-    }
-    
-    .step-text {
-        font-size: 0.9rem;
-    }
-    
-    .step-indicator {
-        margin-bottom: 0.85rem;
+        padding: 1.5rem 1.25rem;
     }
     
     .qr-code-wrapper {
-        max-width: 200px;
+        max-width: 220px;
     }
     
     .qr-header {
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
     }
     
     .footer-section {
@@ -514,16 +496,16 @@ body {
         margin-bottom: 1.15rem;
     }
     
-    .qr-section {
-        gap: 1.15rem;
+    .qr-card {
+        padding: 2rem 1.75rem;
     }
     
     .qr-code-wrapper {
-        max-width: 240px;
+        max-width: 280px;
     }
 }
 
-/* Tablet Layout - Side by side */
+/* Tablet Layout */
 @media (min-width: 769px) {
     .check-in-container {
         padding: 2.5rem 2rem;
@@ -538,29 +520,16 @@ body {
         align-items: center;
     }
     
-    .qr-section {
-        grid-template-columns: 1fr 1fr;
-        gap: 2.5rem;
-        align-items: start;
-    }
-    
     .logo {
         max-width: 380px;
     }
     
-    .instruction-card {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .step-indicator {
-        margin-bottom: 1.75rem;
+    .qr-card {
+        padding: 3rem 2.5rem;
     }
     
     .qr-code-wrapper {
-        max-width: 300px;
+        max-width: 340px;
     }
 }
 
@@ -578,31 +547,12 @@ body {
         max-width: 400px;
     }
     
-    .qr-section {
-        gap: 3rem;
-    }
-    
-    .instruction-card,
     .qr-card {
-        padding: 3rem 2.5rem;
-    }
-    
-    .step-indicator {
-        margin-bottom: 2rem;
-    }
-    
-    .step-number {
-        width: 40px;
-        height: 40px;
-        font-size: 1.15rem;
-    }
-    
-    .step-text {
-        font-size: 1.15rem;
+        padding: 3.5rem 3rem;
     }
     
     .qr-code-wrapper {
-        max-width: 320px;
+        max-width: 380px;
     }
 }
 
